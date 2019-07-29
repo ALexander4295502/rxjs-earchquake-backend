@@ -6,8 +6,8 @@
   "author": "Zheng Yuan <yuanzheng@sportdex.io>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js",
-    "heroku-postbuild": "node index.js"
+    "start": "NODE_ENV=development nodemon index.js",
+    "heroku-postbuild": "NODE_ENV=production node index.js"
   },
   "dependencies": {
     "rxjs": "5.5.0",

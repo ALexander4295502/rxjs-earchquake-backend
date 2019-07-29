@@ -1,15 +1,28 @@
 const WebSocket = require("ws");
 const Twit = require("twit");
 const Rx = require("rxjs");
-const Config = require("./config.json");
+const Config =
+  process.env.NODE_ENV === "development" ? require("./config.json") : null;
 
 const Observable = Rx.Observable;
-// const T = new Twit({
-//   consumer_key: Config.TWITTER.consumer_key,
-//   consumer_secret: Config.TWITTER.consumer_secret,
-//   access_token: Config.TWITTER.access_token,
-//   access_token_secret: Config.TWITTER.access_token_secret
-// });
+const T = new Twit({
+  consumer_key:
+    process.env.NODE_ENV === "development"
+      ? Config.TWITTER.consumer_key
+      : process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret:
+    process.env.NODE_ENV === "development"
+      ? Config.TWITTER.consumer_secret
+      : process.env.TWITTER_CONSUMER_SECRET,
+  access_token:
+    process.env.NODE_ENV === "development"
+      ? Config.TWITTER.access_token
+      : process.env.TWITTER_ACCESS_TOKEN,
+  access_token_secret:
+    process.env.NODE_ENV === "development"
+      ? Config.TWITTER.access_token_secret
+      : process.env.TWITTER_ACCESS_TOKEN_SECRET
+});
 
 const fakeTweetObject = {
   created_at: "Wed Oct 10 20:19:24 +0000 2018",
@@ -25,10 +38,10 @@ const fakeTweetObject = {
 function onConnect(ws) {
   console.log("Client connected on localhost:8081");
 
-//   const stream = T.stream("statuses/filter", {
-//     track: "earchquake",
-//     location: []
-//   });
+  //   const stream = T.stream("statuses/filter", {
+  //     track: "earchquake",
+  //     location: []
+  //   });
 
   Observable.fromEvent(ws, "message")
     .flatMap(message => {
@@ -61,13 +74,13 @@ function onConnect(ws) {
     });
   });
 
-//   Observable.fromEvent(stream, "tweet").subscribe(tweetObject => {
-//     ws.send(JSON.stringify(tweetObject), err => {
-//       if (err) {
-//         console.log("There was an error sending the message");
-//       }
-//     });
-//   });
+  //   Observable.fromEvent(stream, "tweet").subscribe(tweetObject => {
+  //     ws.send(JSON.stringify(tweetObject), err => {
+  //       if (err) {
+  //         console.log("There was an error sending the message");
+  //       }
+  //     });
+  //   });
 }
 
 const Server = new WebSocket.Server({ port: 8081 });
