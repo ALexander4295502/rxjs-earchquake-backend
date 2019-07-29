@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon index.js",
-    "deploy": "node index.js"
+    "heroku-postbuild": "node index.js"
   },
   "dependencies": {
     "rxjs": "5.5.0",
