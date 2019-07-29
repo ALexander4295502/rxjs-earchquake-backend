@@ -1,0 +1,19 @@
+{
+  "name": "rxjs-earchquake-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ALexander4295502/rxjs-earchquake-backend.git",
+  "author": "Zheng Yuan <yuanzheng@sportdex.io>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "rxjs": "5.5.0",
+    "twit": "^2.2.11",
+    "ws": "^7.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
