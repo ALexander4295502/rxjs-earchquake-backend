@@ -6,7 +6,8 @@
   "author": "Zheng Yuan <yuanzheng@sportdex.io>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "deploy": "node index.js"
   },
   "dependencies": {
     "rxjs": "5.5.0",
