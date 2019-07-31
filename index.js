@@ -26,7 +26,7 @@ const T = new Twit({
 
 // Initialization
 function onConnect(ws) {
-  console.log("Client connected on localhost:8081");
+  console.log();
 
   let stream = T.stream("statuses/filter", {
     track: "earthquake",
@@ -64,5 +64,6 @@ function onConnect(ws) {
   });
 }
 
-const Server = new WebSocket.Server({ port: 8081 });
+const Server = new WebSocket.Server({ port: process.env.PORT || 8081 });
+console.log(`app listening on ${process.env.PORT || 8081}`);
 Observable.fromEvent(Server, "connection").subscribe(onConnect);
