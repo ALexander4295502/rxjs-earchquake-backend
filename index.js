@@ -26,7 +26,7 @@ const T = new Twit({
 
 // Initialization
 function onConnect(ws) {
-  console.log();
+  console.log('Connected to the ws host');
 
   let stream = T.stream("statuses/filter", {
     track: "earthquake",
@@ -61,6 +61,11 @@ function onConnect(ws) {
         console.log("There was an error sending the message");
       }
     });
+  });
+
+  Observable.fromEvent(ws, 'close').subscribe(() => {
+    console.log('Client disconnected');
+    stream.stop();
   });
 }
 
