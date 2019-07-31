@@ -24,24 +24,14 @@ const T = new Twit({
       : process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-const fakeTweetObject = {
-  created_at: "Wed Oct 10 20:19:24 +0000 2018",
-  id: 1050118621198921728,
-  id_str: "1050118621198921728",
-  text:
-    "To make room for more expression, we will now count all emojis as equal—including those with gender‍‍‍ ‍‍and skin t… https://t.co/MkGjXf9aXm",
-  user: {},
-  entities: {}
-};
-
 // Initialization
 function onConnect(ws) {
   console.log("Client connected on localhost:8081");
 
-  //   const stream = T.stream("statuses/filter", {
-  //     track: "earchquake",
-  //     location: []
-  //   });
+  let stream = T.stream("statuses/filter", {
+    track: "earthquake",
+    locations: []
+  });
 
   Observable.fromEvent(ws, "message")
     .flatMap(message => {
@@ -58,29 +48,20 @@ function onConnect(ws) {
 
       const finalBounds = boundsArray.concat(bounds);
       return finalBounds.slice(Math.max(finalBounds.length - 50, 0));
-    });
-  // .subscribe(boundsArray => {
-  //   stream.stop();
-  //   stream.params.location = boundsArray;
-  //   stream.start();
-  // }, []);
+    }, [])
+    .subscribe(boundsArray => {
+      stream.stop();
+      stream.params.locations = boundsArray;
+      stream.start();
+    }, []);
 
-  // for testing;
-  Observable.from([1, 2, 3]).subscribe(() => {
-    ws.send(JSON.stringify(fakeTweetObject), err => {
+  Observable.fromEvent(stream, "tweet").subscribe(tweetObject => {
+    ws.send(JSON.stringify(tweetObject), err => {
       if (err) {
         console.log("There was an error sending the message");
       }
     });
   });
-
-  //   Observable.fromEvent(stream, "tweet").subscribe(tweetObject => {
-  //     ws.send(JSON.stringify(tweetObject), err => {
-  //       if (err) {
-  //         console.log("There was an error sending the message");
-  //       }
-  //     });
-  //   });
 }
 
 const Server = new WebSocket.Server({ port: 8081 });
